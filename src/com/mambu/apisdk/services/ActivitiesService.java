@@ -81,25 +81,14 @@ public class ActivitiesService {
 	 * @throws MambuApiException
 	 */
 	@SuppressWarnings("rawtypes")
-	public List<JSONActivity> getActivities(Date fromDate, Date toDate, Class mambuEntity, String entityId, Integer offset, Integer limit)
+	public List<JSONActivity> getActivities(String fromDate, String toDate, Class mambuEntity, String entityId, Integer offset, Integer limit)
 			throws MambuApiException {
-
-		// From Date and To Date are mandatory
-		if (fromDate == null) {
-			throw new IllegalArgumentException("From Date must not be NULL");
-		}
-		if (toDate == null) {
-			throw new IllegalArgumentException("To Date must not be NULL");
-		}
 
 		// Mambu Entity class and its ID must be either both NULL or both NOT NULL
 		if ((mambuEntity == null && entityId != null) || (mambuEntity != null && entityId == null)) {
 			throw new IllegalArgumentException(
 					"Mambu Entity class and its ID must be either both NULL or both NOT NULL");
 		}
-
-		// Format dates as API requirements: "yyyy-MM-dd
-		final String dateTimeFormat = APIData.yyyyMmddFormat;
 
 		ParamsMap params = new ParamsMap();
 
@@ -110,20 +99,8 @@ public class ActivitiesService {
 			params.put(APIData.LIMIT, Integer.toString(limit));
 		}
 		
-		try {
-			String formattedFromDate = new SimpleDateFormat(dateTimeFormat).format(fromDate);
-			params.put(FROM, formattedFromDate);
-
-		} catch (IllegalArgumentException e) {
-			throw new IllegalArgumentException("Invalid From Date");
-		}
-
-		try {
-			String formattedToDate = new SimpleDateFormat(dateTimeFormat).format(toDate);
-			params.put(TO, formattedToDate);
-		} catch (IllegalArgumentException e) {
-			throw new IllegalArgumentException("Invalid To Date");
-		}
+		params.put(FROM, fromDate);
+		params.put(TO, toDate);
 
 		// Get the name of the ID parameter based on the requested Mambu Class and add id to the ParamsMap
 		if (mambuEntity != null) {
@@ -158,7 +135,7 @@ public class ActivitiesService {
 	 * @throws MambuApiException
 	 */
 	@SuppressWarnings("rawtypes")
-	public List<JSONActivity> getActivities(Date fromDate, Date toDate, Class mambuEntity, String entityId)
+	public List<JSONActivity> getActivities(String fromDate, String toDate, Class mambuEntity, String entityId)
 			throws MambuApiException {
 
 		return getActivities(fromDate, toDate, mambuEntity, entityId, null, null);
@@ -184,7 +161,7 @@ public class ActivitiesService {
 	 *
 	 * @throws MambuApiException
 	 */
-	public List<JSONActivity> getActivities(Date fromDate, Date toDate, Integer offset, Integer limit) throws MambuApiException {
+	public List<JSONActivity> getActivities(String fromDate, String toDate, Integer offset, Integer limit) throws MambuApiException {
 		return getActivities(fromDate, toDate, null, null, offset, limit);
 	}
 	
@@ -202,7 +179,7 @@ public class ActivitiesService {
 	 * 
 	 * @throws MambuApiException
 	 */
-	public List<JSONActivity> getActivities(Date fromDate, Date toDate) throws MambuApiException {
+	public List<JSONActivity> getActivities(String fromDate, String toDate) throws MambuApiException {
 		return getActivities(fromDate, toDate, null, null, null, null);
 	}
 
