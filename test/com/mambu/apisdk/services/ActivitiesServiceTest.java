@@ -1,8 +1,6 @@
 package com.mambu.apisdk.services;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -21,8 +19,6 @@ public class ActivitiesServiceTest extends MambuAPIServiceTest {
     
     private String dateFromString = "2010-10-10";
     private String dateToString = "2011-11-11";
-    private Date dateFrom;
-    private Date dateTo;
     private int offset = 0;
     private int limit = 500;
     private Class mambuEntityClass = MambuEntityType.CLIENT.getEntityClass();
@@ -34,19 +30,12 @@ public class ActivitiesServiceTest extends MambuAPIServiceTest {
         super.setUp();
 
         service = new ActivitiesService(super.mambuApiService);
-        
-        try {
-            dateTo = sdf.parse(dateToString);
-            dateFrom = sdf.parse(dateFromString);
-        } catch (ParseException e) {
-            //ignore
-        }
     }
     
     @Test
     public void testActivitiesDateRange() throws MambuApiException {
         // execute
-        service.getActivities(dateFrom, dateTo);
+        service.getActivities(dateFromString, dateToString);
 
         // verify
         ParamsMap params = new ParamsMap();
@@ -61,7 +50,7 @@ public class ActivitiesServiceTest extends MambuAPIServiceTest {
     @Test
     public void testActivitiesDateRangeAndPagination() throws MambuApiException {
         // execute
-        service.getActivities(dateFrom, dateTo, offset, limit);
+        service.getActivities(dateFromString, dateToString, offset, limit);
 
         // verify
         ParamsMap params = new ParamsMap();
@@ -79,7 +68,7 @@ public class ActivitiesServiceTest extends MambuAPIServiceTest {
     public void testActivitiesDateRangeAndMambuEntity() throws MambuApiException {
 
         // execute
-        service.getActivities(dateFrom, dateTo, mambuEntityClass, mambuEntityId);
+        service.getActivities(dateFromString, dateToString, mambuEntityClass, mambuEntityId);
 
         // verify
         ParamsMap params = new ParamsMap();
@@ -96,7 +85,7 @@ public class ActivitiesServiceTest extends MambuAPIServiceTest {
     public void testActivitiesDateRangeAndMambuEntityAndPagination() throws MambuApiException {
 
         // execute
-        service.getActivities(dateFrom, dateTo, mambuEntityClass, mambuEntityId, offset, limit);
+        service.getActivities(dateFromString, dateToString, mambuEntityClass, mambuEntityId, offset, limit);
 
         // verify
         ParamsMap params = new ParamsMap();

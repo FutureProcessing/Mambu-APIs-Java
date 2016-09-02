@@ -1,5 +1,6 @@
 package demo;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -9,6 +10,7 @@ import com.mambu.api.server.handler.activityfeed.model.JSONActivity;
 import com.mambu.apisdk.MambuAPIFactory;
 import com.mambu.apisdk.exception.MambuApiException;
 import com.mambu.apisdk.services.ActivitiesService;
+import com.mambu.apisdk.util.APIData;
 import com.mambu.clients.shared.model.Client;
 
 /**
@@ -21,6 +23,8 @@ public class DemoTestActivitiesService {
 
 	// Client ID to be selected for testGetActivitiesForEntity() unit test
 	private static String clientKeyWithActivities;
+    
+    private static SimpleDateFormat dateTimeFormat = new SimpleDateFormat(APIData.yyyyMmddFormat);
 
 	public static void main(String[] args) {
 
@@ -57,7 +61,7 @@ public class DemoTestActivitiesService {
 		Date fromDate = new Date(timeBefore);
 
 		// Make an API call with entity name and Id set to NULL to get all available activities
-		List<JSONActivity> jsonActivities = activitiesService.getActivities(fromDate, toDate);
+		List<JSONActivity> jsonActivities = activitiesService.getActivities(dateTimeFormat.format(fromDate), dateTimeFormat.format(toDate));
 
 		// Print results
 		if (jsonActivities == null) {
@@ -114,7 +118,7 @@ public class DemoTestActivitiesService {
 		}
 
 		// Make an API call to get all activities for the specified MambuEntity type and its ID
-		List<JSONActivity> jsonActivities = activitiesService.getActivities(fromDate, toDate, mambuEntity, entityId);
+		List<JSONActivity> jsonActivities = activitiesService.getActivities(dateTimeFormat.format(fromDate), dateTimeFormat.format(toDate), mambuEntity, entityId);
 
 		// Print results
 		if (jsonActivities == null) {
